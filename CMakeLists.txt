@@ -18,7 +18,6 @@ add_executable(middleware_sever middleware_sever.cpp)
 target_link_libraries(middleware_sever PRIVATE Server)
 
 
-add_executable(test test2.cpp)
 
 
 
