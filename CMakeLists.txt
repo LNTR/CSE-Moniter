@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(middleware VERSION 0.1.0 LANGUAGES C CXX)
 
-find_package(Boost COMPONENTS REQUIRED)
-link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES})
+find_package(Boost REQUIRED COMPONENTS json)
+find_package(OpenSSL REQUIRED)
+
+link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES} OpenSSL::SSL Boost::json)
 
 add_library(Client client/Client.cpp)
 add_library(Server server/Server.cpp server/ObserverPattern.cpp server/NotificationQueue.cpp)
@@ -18,6 +20,7 @@ add_executable(middleware_sever middleware_sever.cpp)
 target_link_libraries(middleware_sever PRIVATE Server)
 
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 
