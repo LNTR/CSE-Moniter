@@ -3,12 +3,12 @@
 #include "NotificationQueue.hpp"
 #endif
 
-NotificationQueue::NotificationQueue()
+StockNotificationQueue::StockNotificationQueue()
 {
     notification_queue = {};
 }
 
-void NotificationQueue::push_new_notification(Notification notification)
+void StockNotificationQueue::push_new_notification(Notification notification)
 {
     shared_lock.lock();
     notification_queue.push_back(notification);
@@ -16,7 +16,7 @@ void NotificationQueue::push_new_notification(Notification notification)
     shared_lock.unlock();
 }
 
-Notification NotificationQueue::pull_new_notification()
+Notification StockNotificationQueue::pull_new_notification()
 {
     Notification notification = notification_queue.back();
     return notification;

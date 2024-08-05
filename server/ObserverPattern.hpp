@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-using std::unordered_set, std::mutex, std::string;
+using std::unordered_set, std::mutex, std::string, std::lock_guard;
 
 class Subject;
 class Observer

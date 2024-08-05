@@ -8,6 +8,7 @@
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 #include <memory>
+#include "../utils/Session.hpp"
 
 namespace asio = boost::asio;
 namespace ip = asio::ip;
@@ -16,6 +17,7 @@ namespace http = boost::beast::http;
 
 using std::string, std::array;
 using tcp = ip::tcp;
+
 class ServerPublisher
 {
 
@@ -25,7 +27,7 @@ public:
     void publish_message(string message);
 
 private:
-    NotificationQueue *notification_queue;
+    StockNotificationQueue *notification_queue;
     string topic;
     std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
     void add_websocket_decorator();
@@ -41,7 +43,7 @@ public:
 private:
     string topic;
     std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
-    NotificationQueue *notification_queue;
+    StockNotificationQueue *notification_queue;
 };
 
 struct ClientMetaData
@@ -49,5 +51,3 @@ struct ClientMetaData
     string topic;
     string type;
 };
-
-ClientMetaData get_meta_data(ip::tcp::socket &socket);

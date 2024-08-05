@@ -3,7 +3,7 @@
 
 using std::string, std::move, ip::tcp;
 
-NotificationQueue global_notification_queue;
+StockNotificationQueue global_notification_queue;
 
 ServerPublisher::ServerPublisher(string topic, tcp::socket socket_)
 {
@@ -70,18 +70,4 @@ void ServerSubscriber::update(Subject *changed_subject)
             websocket->write(buffer);
         }
     }
-}
-
-ClientMetaData get_meta_data(tcp::socket &socket)
-{
-    array<char, 1024> char_buffer;
-    boost::system::error_code error_code;
-    asio::mutable_buffer buffer = asio::buffer(char_buffer, 1024);
-    int char_count = socket.read_some(buffer, error_code);
-    string message(char_buffer.begin(), char_count);
-    vector<string> split_vector;
-    boost::split(split_vector, message, boost::is_any_of("--"), boost::token_compress_on);
-    string type = split_vector.at(0);
-    string topic = split_vector.at(1);
-    return ClientMetaData{topic, type};
 }

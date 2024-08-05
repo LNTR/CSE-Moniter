@@ -13,11 +13,11 @@ struct Notification
     string message;
 };
 
-class NotificationQueue : public Subject
+class StockNotificationQueue : public Subject
 {
 
 public:
-    NotificationQueue();
+    StockNotificationQueue();
     void push_new_notification(Notification);
     Notification pull_new_notification();
 
