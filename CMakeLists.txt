@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(middleware VERSION 0.1.0 LANGUAGES C CXX)
 
-find_package(Boost REQUIRED COMPONENTS json)
+find_package(Boost REQUIRED COMPONENTS json url)
 find_package(OpenSSL REQUIRED)
 
-link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES} OpenSSL::SSL Boost::json)
+link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES} OpenSSL::SSL Boost::json Boost::url)
 
 add_library(Client client/Client.cpp)
 add_library(Server server/Server.cpp server/ObserverPattern.cpp server/NotificationQueue.cpp)
+add_library(Session utils/Session.cpp)
+
 
 add_executable(subscriber subscriber.cpp)
 target_link_libraries(subscriber PRIVATE Client)
