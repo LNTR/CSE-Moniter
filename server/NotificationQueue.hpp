@@ -4,6 +4,9 @@
 #endif
 
 #include <vector>
+#include <chrono>
+
+#include "../utils/Session.hpp"
 
 using std::string, std::vector;
 
@@ -23,4 +26,5 @@ public:
 
 private:
     vector<Notification> notification_queue;
+    string get_new_data();
 };

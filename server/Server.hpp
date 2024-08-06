@@ -18,21 +18,6 @@ namespace http = boost::beast::http;
 using std::string, std::array;
 using tcp = ip::tcp;
 
-class ServerPublisher
-{
-
-public:
-    ServerPublisher(string topic, ip::tcp::socket socket_);
-    void read_new_message();
-    void publish_message(string message);
-
-private:
-    StockNotificationQueue *notification_queue;
-    string topic;
-    std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
-    void add_websocket_decorator();
-};
-
 class ServerSubscriber : public Observer
 {
 public:
@@ -44,10 +29,6 @@ private:
     string topic;
     std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
     StockNotificationQueue *notification_queue;
-};
-
-struct ClientMetaData
-{
     string topic;
-    string type;
+    void configure_websocket();
 };
