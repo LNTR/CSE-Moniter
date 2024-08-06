@@ -4,18 +4,9 @@
 
 using std::thread, std::cout;
 
-void handle_publisher(ip::tcp::socket socket_, string topic)
+void handle_subscriber(ip::tcp::socket socket_)
 {
-    ServerPublisher publisher(topic, std::move(socket_));
-    for (;;)
-    {
-        publisher.read_new_message();
-    }
-}
-
-void handle_subscriber(ip::tcp::socket socket_, string topic)
-{
-    ServerSubscriber subscriber(topic, std::move(socket_));
+    WebClient subscriber(std::move(socket_));
 
     for (;;)
     {
@@ -39,16 +30,7 @@ int main()
     for (;;)
     {
         acceptor.accept(socket);
-        ClientMetaData meta_data = get_meta_data(socket);
-        if (meta_data.type == "1")
-        {
-            thread connection(handle_publisher, std::move(socket), meta_data.topic);
-            connection.detach();
-        }
-        else
-        {
-            thread connection(handle_subscriber, std::move(socket), meta_data.topic);
-            connection.detach();
-        }
+        thread connection(handle_subscriber, std::move(socket));
+        connection.detach();
     }
 }

@@ -11,7 +11,7 @@ StockNotificationQueue::StockNotificationQueue()
 void StockNotificationQueue::push_new_notification(Notification notification)
 {
 
-        shared_lock.lock();
+    shared_lock.lock();
     notification_queue.push_back(notification);
     notify();
     shared_lock.unlock();
