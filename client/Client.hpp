@@ -12,10 +12,10 @@ namespace ip = asio::ip;
 
 using std::string, std::vector, std::array;
 
-class WebClient
+class WebSubscriber
 {
 public:
-    WebClient(string topic, int type);
+    WebSubscriber(string topic, int type);
     void connect(string ip, string port);
     void disconnect();
 
@@ -29,14 +29,14 @@ protected:
     ip::tcp::socket socket;
 };
 
-class ClientPublisher : public WebClient
+class ClientPublisher : public WebSubscriber
 {
 public:
     ClientPublisher(string topic);
     void push_new_message(string message);
 };
 
-class ClientSubscriber : public WebClient
+class ClientSubscriber : public WebSubscriber
 {
 public:
     ClientSubscriber(string topic);

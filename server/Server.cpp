@@ -5,40 +5,66 @@ using std::string, std::move, ip::tcp;
 
 StockNotificationQueue global_notification_queue;
 
-WebClient::WebClient(tcp::socket socket_)
+ServerClient::ServerClient(tcp::socket socket_)
 {
     this->notification_queue = &global_notification_queue;
-    this->notification_queue->attach(this);
     this->websocket = std::make_unique<beast::websocket::stream<tcp::socket>>(std::move(socket_));
     configure_websocket();
 }
 
-void WebClient::configure_websocket()
+void ServerClient::configure_websocket()
 {
     websocket->text(true);
-    auto lambda = [](beast::websocket::response_type &res)
+    auto decoration = [](beast::websocket::response_type &res)
     {
         res.set(http::field::server,
                 std::string(BOOST_BEAST_VERSION_STRING) +
                     " websocket-server-sync");
     };
-    websocket->set_option(beast::websocket::stream_base::decorator(lambda));
+    websocket->set_option(beast::websocket::stream_base::decorator(decoration));
+    websocket->accept();
 }
 
-WebClient::~WebClient()
+ServerClient::~ServerClient()
+{
+    websocket->close(beast::websocket::close_code::normal);
+};
+
+void ServerClient::write_to_socket(string message)
+{
+    asio::mutable_buffer buffer = asio::buffer(message, message.length());
+    websocket->write(buffer);
+}
+
+string ServerClient::read_from_socket()
+{
+    beast::flat_buffer buffer;
+    websocket->read(buffer);
+    string message = beast::buffers_to_string(buffer);
+    return message;
+}
+
+WebSubscriber::WebSubscriber(tcp::socket socket_) : ServerClient(std::move(socket_))
+{
+    this->notification_queue->attach(this);
+}
+
+WebSubscriber::~WebSubscriber()
 {
     this->notification_queue->detach(this);
 }
 
-void WebClient::update(Subject *changed_subject)
+void WebSubscriber::update(Subject *changed_subject)
 {
     if (notification_queue == changed_subject)
     {
-        boost::system::error_code error_code;
-
         Notification new_notification = notification_queue->pull_new_notification();
-
-        asio::mutable_buffer buffer = asio::buffer(new_notification.message, new_notification.message.length());
-        websocket->write(buffer);
+        write_to_socket(new_notification.message);
     }
+}
+
+void WebSubscriber::_test_api()
+{
+    string message = "Foo bar from web client";
+    write_to_socket(message);
 }

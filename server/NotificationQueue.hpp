@@ -2,11 +2,10 @@
 #define OBSERVER_PATTERN
 #include "ObserverPattern.hpp"
 #endif
+#include "../utils/Session.hpp"
 
 #include <vector>
 #include <chrono>
-
-#include "../utils/Session.hpp"
 
 using std::string, std::vector;
 

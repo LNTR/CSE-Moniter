@@ -1,4 +1,7 @@
-#include "session.hpp"
+#ifndef SESSION
+#define SESSION
+#include "Session.hpp"
+#endif
 
 Session::Session()
 {

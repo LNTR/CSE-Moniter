@@ -1,13 +1,13 @@
 #include "Client.hpp"
 #include <iostream>
 
-WebClient::WebClient(string topic, int type) : io_context(), socket(io_context)
+WebSubscriber::WebSubscriber(string topic, int type) : io_context(), socket(io_context)
 {
     this->topic = topic;
     this->type = type;
 }
 
-void WebClient::connect(string ip, string port)
+void WebSubscriber::connect(string ip, string port)
 {
     ip::address server_address = ip::make_address(ip);
     ip::port_type server_port = ip::port_type(std::stoi(port));
@@ -16,7 +16,7 @@ void WebClient::connect(string ip, string port)
     initialize_client();
 }
 
-void WebClient::initialize_client()
+void WebSubscriber::initialize_client()
 {
     string message = std::to_string(type);
     message += "--" + topic;
@@ -26,12 +26,12 @@ void WebClient::initialize_client()
     socket.wait(socket.wait_write);
 };
 
-void WebClient::disconnect()
+void WebSubscriber::disconnect()
 {
     socket.close();
 }
 
-ClientPublisher::ClientPublisher(string topic) : WebClient(topic, 1) {}
+ClientPublisher::ClientPublisher(string topic) : WebSubscriber(topic, 1) {}
 
 void ClientPublisher::push_new_message(string message)
 {
@@ -41,7 +41,7 @@ void ClientPublisher::push_new_message(string message)
     socket.write_some(buffer, error_code);
 }
 
-ClientSubscriber::ClientSubscriber(string topic) : WebClient(topic, 0) {}
+ClientSubscriber::ClientSubscriber(string topic) : WebSubscriber(topic, 0) {}
 
 string ClientSubscriber::pull_new_message()
 {

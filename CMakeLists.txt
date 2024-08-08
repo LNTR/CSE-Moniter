@@ -12,14 +12,14 @@ add_library(Session utils/Session.cpp)
 
 
 add_executable(subscriber subscriber.cpp)
-target_link_libraries(subscriber PRIVATE Client)
+target_link_libraries(subscriber PRIVATE Client Session)
 
 add_executable(publisher publisher.cpp)
-target_link_libraries(publisher PRIVATE Client)
+target_link_libraries(publisher PRIVATE Client Session)
 
 
 add_executable(middleware_sever middleware_sever.cpp)
-target_link_libraries(middleware_sever PRIVATE Server)
+target_link_libraries(middleware_sever PRIVATE Server Session)
 
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
