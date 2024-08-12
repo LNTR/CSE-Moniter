@@ -7,9 +7,8 @@ int main(int argc, char **argv)
 
     string ip = argv[1];
     string port = argv[2];
-    string topic = argv[3];
 
-    ClientPublisher client(topic);
+    Publisher client;
     client.connect(ip, port);
 
     for (;;)

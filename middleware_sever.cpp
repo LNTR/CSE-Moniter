@@ -5,15 +5,35 @@
 
 using std::thread, std::cout;
 
-void handle_subscriber(ip::tcp::socket socket_)
+void accept_subscribers()
 {
-    WebSubscriber subscriber(std::move(socket_));
+    asio::io_context io_context;
+    ip::address address = ip::make_address("127.0.0.1");
+    ip::port_type port = ip::port_type(88);
+    ip::tcp::endpoint endpoint(address, port);
+    ip::tcp::acceptor acceptor(io_context, endpoint);
+    ip::tcp::socket socket(io_context);
+
+    acceptor.accept(socket);
+    WebSubscriber subscriber(std::move(socket));
+    for (;;)
+    {
+    }
+}
+void accept_publishers()
+{
+    asio::io_context io_context;
+    ip::address address = ip::make_address("127.0.0.1");
+    ip::port_type port = ip::port_type(89);
+    ip::tcp::endpoint endpoint(address, port);
+    ip::tcp::acceptor acceptor(io_context, endpoint);
+    ip::tcp::socket socket(io_context);
 
     for (;;)
     {
-        subscriber._test_api();
-        cout << "Message Sent\n";
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+        acceptor.accept(socket);
+        ContentPublsiher publisher(std::move(socket));
+        publisher.watch_and_update_notification_queue();
     }
 }
 
@@ -21,24 +41,12 @@ int main()
 {
     std::system("cls");
 
-    asio::io_context io_context;
-    ip::address address = ip::make_address("127.0.0.1");
-    ip::port_type port = ip::port_type(88);
+    thread subscriber_acceptor_thread(accept_subscribers);
+    subscriber_acceptor_thread.detach();
+    thread publisher_acceptor_thread(accept_publishers);
+    publisher_acceptor_thread.detach();
 
-    ip::tcp::endpoint endpoint(address, port);
-
-    ip::tcp::acceptor acceptor(io_context, endpoint);
-
-    ip::tcp::socket socket(io_context);
-
-    // for (;;)
-    // {
-    //     thread connection(handle_subscriber, std::move(socket));
-    //     connection.detach();
-    // }
     for (;;)
     {
-        acceptor.accept(socket);
-        handle_subscriber(std::move(socket));
-    }
+    };
 }

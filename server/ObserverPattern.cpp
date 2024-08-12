@@ -2,6 +2,7 @@
 #define OBSERVER_PATTERN
 #include "ObserverPattern.hpp"
 #endif
+#include <iostream>
 
 void Subject::attach(Observer *observer)
 {
@@ -23,4 +24,4 @@ void Subject::notify()
     }
 };
 
-Observer::~Observer(){};
+Observer::~Observer() {};

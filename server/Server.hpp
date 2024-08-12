@@ -8,6 +8,7 @@
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 #include <memory>
+#include <iostream>
 
 namespace asio = boost::asio;
 namespace ip = asio::ip;
@@ -17,6 +18,8 @@ namespace http = boost::beast::http;
 using std::string, std::array;
 using tcp = ip::tcp;
 
+//
+
 class ServerClient
 {
 public:
@@ -24,7 +27,6 @@ public:
     ~ServerClient();
 
 private:
-    StockNotificationQueue *notification_queue;
     void configure_websocket();
     std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
 
@@ -32,6 +34,8 @@ protected:
     void write_to_socket(string message);
     string read_from_socket();
 };
+
+//
 
 class WebSubscriber : public Observer, private ServerClient
 {
@@ -45,10 +49,14 @@ private:
     StockNotificationQueue *notification_queue;
 };
 
-class ContentPublsiher
+//
+
+class ContentPublsiher : public ServerClient
 {
 public:
     ContentPublsiher(ip::tcp::socket socket_);
-    void publish_data();
-    ~ContentPublsiher();
+    void watch_and_update_notification_queue();
+
+private:
+    StockNotificationQueue *notification_queue;
 };

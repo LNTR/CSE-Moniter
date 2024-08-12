@@ -2,6 +2,7 @@
 #define GLOBAL_NOTIFICATION_QUEUE
 #include "NotificationQueue.hpp"
 #endif
+#include <iostream>
 
 StockNotificationQueue::StockNotificationQueue()
 {
@@ -10,7 +11,6 @@ StockNotificationQueue::StockNotificationQueue()
 
 void StockNotificationQueue::push_new_notification(Notification notification)
 {
-
     shared_lock.lock();
     notification_queue.push_back(notification);
     notify();
@@ -22,4 +22,3 @@ Notification StockNotificationQueue::pull_new_notification()
     Notification notification = notification_queue.back();
     return notification;
 }
-

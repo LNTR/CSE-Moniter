@@ -11,9 +11,6 @@ add_library(Server server/Server.cpp server/ObserverPattern.cpp server/Notificat
 add_library(Session utils/Session.cpp)
 
 
-add_executable(subscriber subscriber.cpp)
-target_link_libraries(subscriber PRIVATE Client Session)
-
 add_executable(publisher publisher.cpp)
 target_link_libraries(publisher PRIVATE Client Session)
 
