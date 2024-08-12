@@ -5,41 +5,29 @@
 #include <thread>
 #include <string>
 #include <array>
-#include <boost/asio.hpp>
+#include <memory>
+#include <boost/beast.hpp>
 
 namespace asio = boost::asio;
 namespace ip = asio::ip;
+namespace beast = boost::beast;
 
+using tcp = asio::ip::tcp;
 using std::string, std::vector, std::array;
 
-class WebSubscriber
+class Publisher
 {
 public:
-    WebSubscriber(string topic, int type);
+    Publisher();
     void connect(string ip, string port);
     void disconnect();
+    void push_new_message(string message);
 
 private:
     asio::io_context io_context;
-    string topic;
-    int type;
-    void initialize_client();
+    string host;
 
 protected:
-    ip::tcp::socket socket;
-};
-
-class ClientPublisher : public WebSubscriber
-{
-public:
-    ClientPublisher(string topic);
-    void push_new_message(string message);
-};
-
-class ClientSubscriber : public WebSubscriber
-{
-public:
-    ClientSubscriber(string topic);
-
-    string pull_new_message();
+    std::unique_ptr<beast::websocket::stream<tcp::socket>> websocket;
+    void configure_websocket();
 };

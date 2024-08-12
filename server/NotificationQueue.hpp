@@ -25,5 +25,4 @@ public:
 
 private:
     vector<Notification> notification_queue;
-    string get_new_data();
 };

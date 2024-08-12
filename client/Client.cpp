@@ -1,54 +1,45 @@
 #include "Client.hpp"
-#include <iostream>
 
-WebSubscriber::WebSubscriber(string topic, int type) : io_context(), socket(io_context)
+using std::string, std::move, ip::tcp;
+
+Publisher::Publisher() : io_context()
 {
-    this->topic = topic;
-    this->type = type;
+    this->websocket = std::make_unique<beast::websocket::stream<tcp::socket>>(io_context);
 }
 
-void WebSubscriber::connect(string ip, string port)
+void Publisher::connect(string ip_, string port_)
 {
-    ip::address server_address = ip::make_address(ip);
-    ip::port_type server_port = ip::port_type(std::stoi(port));
-    ip::tcp::endpoint endpoint(server_address, server_port);
+    ip::address address = ip::make_address(ip_);
+    int port = std::stoi(port_);
+    tcp::endpoint endpoint(address, port);
+    tcp::socket &socket = beast::get_lowest_layer(*websocket);
     socket.connect(endpoint);
-    initialize_client();
+    host = ip_ + ":" + port_;
+    configure_websocket();
 }
 
-void WebSubscriber::initialize_client()
+void Publisher::configure_websocket()
 {
-    string message = std::to_string(type);
-    message += "--" + topic;
+    websocket->text(true);
 
-    auto buffer = asio::buffer(message, message.length());
-    socket.write_some(buffer);
-    socket.wait(socket.wait_write);
-};
+    auto decoration = [](beast::websocket::request_type &req)
+    {
+        req.set(beast::http::field::user_agent,
+                std::string(BOOST_BEAST_VERSION_STRING) +
+                    " websocket-client-coro");
+    };
 
-void WebSubscriber::disconnect()
-{
-    socket.close();
+    websocket->set_option(beast::websocket::stream_base::decorator(decoration));
+    websocket->handshake(host, "/");
 }
 
-ClientPublisher::ClientPublisher(string topic) : WebSubscriber(topic, 1) {}
-
-void ClientPublisher::push_new_message(string message)
+void Publisher::disconnect()
 {
-    boost::system::error_code error_code;
-
-    auto buffer = asio::buffer(message, message.length());
-    socket.write_some(buffer, error_code);
+    websocket->close(beast::websocket::close_code::normal);
 }
 
-ClientSubscriber::ClientSubscriber(string topic) : WebSubscriber(topic, 0) {}
-
-string ClientSubscriber::pull_new_message()
+void Publisher::push_new_message(string message)
 {
-    array<char, 1024> char_buffer;
-    boost::system::error_code error_code;
-    asio::mutable_buffer buffer = asio::buffer(char_buffer, 1024);
-    int char_count = socket.read_some(buffer, error_code);
-    string message(char_buffer.begin(), char_count);
-    return message;
+    asio::mutable_buffer buffer = asio::buffer(message, message.length());
+    websocket->write(buffer);
 }

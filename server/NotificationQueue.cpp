@@ -23,10 +23,3 @@ Notification StockNotificationQueue::pull_new_notification()
     return notification;
 }
 
-string StockNotificationQueue::get_new_data()
-{
-    string api = "www.cse.lk/api/tradeSummary";
-    Session session;
-    auto response = session.post(api);
-    return response.body();
-}
