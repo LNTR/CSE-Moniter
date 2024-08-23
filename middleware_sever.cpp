@@ -5,48 +5,80 @@
 
 using std::thread, std::cout;
 
-void accept_subscribers()
+void handle_subscriber(ip::tcp::socket socket)
 {
-    asio::io_context io_context;
-    ip::address address = ip::make_address("127.0.0.1");
-    ip::port_type port = ip::port_type(88);
-    ip::tcp::endpoint endpoint(address, port);
-    ip::tcp::acceptor acceptor(io_context, endpoint);
-    ip::tcp::socket socket(io_context);
+    cout << "Invoked";
 
-    acceptor.accept(socket);
     WebSubscriber subscriber(std::move(socket));
+    subscriber._test_api();
     for (;;)
     {
-    }
+    };
 }
-void accept_publishers()
+void handle_publisher(ip::tcp::socket socket)
 {
-    asio::io_context io_context;
-    ip::address address = ip::make_address("127.0.0.1");
-    ip::port_type port = ip::port_type(89);
-    ip::tcp::endpoint endpoint(address, port);
-    ip::tcp::acceptor acceptor(io_context, endpoint);
-    ip::tcp::socket socket(io_context);
 
-    for (;;)
-    {
-        acceptor.accept(socket);
-        ContentPublsiher publisher(std::move(socket));
-        publisher.watch_and_update_notification_queue();
-    }
+    ContentPublsiher publisher(std::move(socket));
+    publisher.watch_and_update_notification_queue();
+}
+
+void accepting(ip::tcp::acceptor &acceptor, asio::io_context &io_context, bool &is_publisher_available)
+{
+    is_publisher_available = false;
+    acceptor.async_accept(io_context, [&is_publisher_available](const auto &error, ip::tcp::socket socket)
+                          { 
+                            is_publisher_available=true;
+                            cout << "Accepted";
+                            handle_publisher(std::move(socket));
+                            accepting(ip::tcp::acceptor acceptor, asio::io_context io_context, bool &is_publisher_available) });
 }
 
 int main()
 {
     std::system("cls");
 
-    thread subscriber_acceptor_thread(accept_subscribers);
-    subscriber_acceptor_thread.detach();
-    thread publisher_acceptor_thread(accept_publishers);
-    publisher_acceptor_thread.detach();
+    asio::io_context io_context;
+    ip::address subscriber_address = ip::make_address("127.0.0.1");
+    ip::port_type subscriber_port = ip::port_type(88);
+    ip::tcp::endpoint subscriber_endpoint(subscriber_address, subscriber_port);
 
-    for (;;)
+    ip::address publisher_address = ip::make_address("127.0.0.1");
+    ip::port_type publisher_port = ip::port_type(89);
+    ip::tcp::endpoint publisher_endpoint(publisher_address, publisher_port);
+
+    ip::tcp::acceptor subscriber_acceptor(io_context, subscriber_endpoint);
+    ip::tcp::acceptor publisher_acceptor(io_context, publisher_endpoint);
+    bool is_publisher_available = true;
+    bool is_subscriber_available = true;
+    ip::tcp::socket publisher_socket(io_context);
+
+    while (true)
     {
-    };
+        if (is_publisher_available)
+        {
+            accepting(publisher_acceptor, io_context, is_publisher_available);
+        }
+    }
+    // while (true)
+    // {
+    //     if (is_publisher_available)
+    //     {
+    //         cout << "Came here";
+    //         is_publisher_available = false;
+    //     }
+
+    // if (is_subscriber_available)
+    // {
+    //     is_subscriber_available = false;
+
+    //     ip::tcp::socket subscriber_socket(io_context);
+    //     subscriber_acceptor.async_accept(io_context, [&is_subscriber_available](const auto &error, ip::tcp::socket socket)
+    //                                      {
+    //                                         cout << "Accepted";
+    //                                         is_subscriber_available=true;
+    //                                         handle_subscriber(std::move(socket)); });
+    // }
+    // }
+
+    io_context.run();
 }

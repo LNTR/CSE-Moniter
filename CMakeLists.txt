@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(middleware VERSION 0.1.0 LANGUAGES C CXX)
 
+
 find_package(Boost REQUIRED COMPONENTS json url)
 find_package(OpenSSL REQUIRED)
 
