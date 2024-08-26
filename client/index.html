@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Notification System</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stock Notification System</h1>
+      <div class="subscription-box">
+        <label for="stock">Enter Stock Symbol:</label>
+        <input type="text" id="stock" placeholder="e.g., AAPL" />
+        <button id="subscribe-btn">Subscribe</button>
+      </div>
+
+      <div id="notification-list" class="notification-list">
+        <h2>Notifications</h2>
+        <ul id="notifications"></ul>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
