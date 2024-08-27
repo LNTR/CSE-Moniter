@@ -1,20 +1,16 @@
 #include "server/Server.hpp"
+#include "config.hpp"
 #include <thread>
 #include <iostream>
 #include <chrono>
 #include <unordered_map>
 #include <format>
 
-#define SUBSCRIBER_PORT_NUMBER 88
-#define PUBLISHER_PORT_NUMBER 89
-#define HOST "127.0.0.1"
-
 using std::thread, std::cout, std::unordered_map;
 
 void handle_subscriber(ip::tcp::socket socket)
 {
     WebSubscriber subscriber(std::move(socket));
-    subscriber._test_api();
     for (;;)
     {
     };
