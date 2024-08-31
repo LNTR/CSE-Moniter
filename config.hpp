@@ -1,8 +1,9 @@
+#include <string>
+using std::string;
+
 #ifndef CONFIG
 #define CONFIG
 
-#include <string>
-using std::string;
 #define HOST "127.0.0.1"
 
 #define SUBSCRIBER_PORT_NUMBER 88
