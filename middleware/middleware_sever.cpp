@@ -47,6 +47,5 @@ int main()
                                          {  thread(handle_subscriber, std::move(socket)).detach();
                                             io_context.stop(); });
         io_context.run();
-        cout << "Connected";
     }
 }
