@@ -1,4 +1,4 @@
-#include "client/Client.hpp"
+#include "Client.hpp"
 #include <iostream>
 
 int main(int argc, char **argv)

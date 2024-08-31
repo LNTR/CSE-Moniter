@@ -1,4 +1,4 @@
-#include "../config.hpp"
+#include "config.hpp"
 #include <boost/mysql.hpp>
 #include <boost/asio.hpp>
 #include <memory>

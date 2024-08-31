@@ -9,24 +9,27 @@ find_package(OpenSSL REQUIRED)
 
 link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES} OpenSSL::SSL Boost::json Boost::url)
 
-add_library(Client client/Client.cpp)
-add_library(Server server/Server.cpp server/ObserverPattern.cpp server/NotificationQueue.cpp)
-add_library(Session utils/Session.cpp)
+add_library(Client publisher/Client.cpp)
+add_library(Server middleware/Server.cpp  middleware/patterns/ObserverPattern.cpp middleware/NotificationQueue.cpp)
+add_library(Session publisher/Session.cpp)
 
-add_library(MySqlModel utils/MySqlModel.cpp)
-target_link_libraries(MySqlModel private charconv)
+add_library(MySqlModel middleware/utils/MySqlModel.cpp)
+target_link_libraries(MySqlModel PRIVATE charconv)
+target_include_directories(MySqlModel PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 
-add_executable(publisher publisher.cpp)
+add_executable(publisher publisher/publisher.cpp)
 target_link_libraries(publisher PRIVATE Client Session)
+target_include_directories(publisher PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
-add_executable(middleware_sever middleware_sever.cpp)
+add_executable(middleware_sever middleware/middleware_sever.cpp)
 target_link_libraries(middleware_sever PRIVATE Server Session)
+target_include_directories(publisher PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 

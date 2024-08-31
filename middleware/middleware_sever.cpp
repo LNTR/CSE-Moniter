@@ -1,5 +1,5 @@
-#include "server/Server.hpp"
-#include "config.hpp"
+#include "Server.hpp"
+#include "utils/config.hpp"
 #include <thread>
 #include <iostream>
 #include <chrono>

@@ -1,6 +1,6 @@
 #ifndef OBSERVER_PATTERN
 #define OBSERVER_PATTERN
-#include "ObserverPattern.hpp"
+#include "patterns/ObserverPattern.hpp"
 #endif
 
 #include <vector>
