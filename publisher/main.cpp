@@ -1,5 +1,8 @@
 #include "Publisher.hpp"
+#include "Session.hpp"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 int main(int argc, char **argv)
 {
@@ -9,23 +12,17 @@ int main(int argc, char **argv)
     string port = argv[2];
 
     Publisher client;
+    Session session;
+
     client.connect(ip, port);
 
     for (;;)
     {
-        string user_input;
-        std::getline(std::cin, user_input);
-        if (user_input == "terminate")
-        {
-            client.push_new_message(user_input);
-            client.disconnect();
-            break;
-        }
-        else
-        {
-            user_input += "\n";
-            client.push_new_message(user_input);
-        }
+
+        auto results = session.post("www.cse.lk/api/tradeSummary");
+        string message = results.body();
+        client.push_new_message(message);
+        std::this_thread::sleep_for(std::chrono::seconds(5));
     }
     return 0;
 }
