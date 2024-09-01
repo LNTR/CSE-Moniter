@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Moniter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      main {
+        width: 90%;
+        margin: auto;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0.5rem;
+      }
+      input {
+        border: 1px solid black;
+        background: white;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      span {
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+      }
+      span:hover {
+        background: rgba(209, 208, 208, 0.693);
+      }
+      ul {
+        text-decoration: none;
+        list-style-type: none;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0.5rem;
+      }
+      button {
+        background-color: rgba(0, 0, 255, 0.658);
+        border: none;
+        color: white;
+        text-align: center;
+        padding: 0.25rem;
+        margin: 0 0.25rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .contorl {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <input type="text" placeholder="Enter Stock Symbol" />
+        <div class="icon">
+          <object type="image/svg+xml" data="images/search.svg">
+            Your browser does not support SVG
+          </object>
+        </div>
+      </header>
+      <div class="hero">
+        <div class="placeholder">
+          <h4>Working</h4>
+        </div>
+        <nav>
+          <span>Subscribed</span>
+          <span>All</span>
+        </nav>
+        <ul>
+          <li>
+            <h4>Stock Symbol</h4>
+            <div class="control">
+              <button>Subscribe</button><button>Visit</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <script src="./scripts/popup.js"></script>
+  </body>
+</html>
