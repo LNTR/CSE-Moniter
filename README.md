@@ -27,7 +27,8 @@ This project is a C++ application that monitors stocks listed on the Colombo Sto
 2. **Clone the Repository**:
    ```bash
    git clone https://github.com/your-username/stock-notification-system.git
-   cd stock-notification-system```
+   cd stock-notification-system
+   ```
 
 ## Build the Project
 ```
