@@ -1,4 +1,7 @@
 
+#ifndef OBSERVER_PATTERN
+#define OBSERVER_PATTERN
+
 #include <unordered_set>
 #include <mutex>
 #include <string>
@@ -28,3 +31,4 @@ protected:
 private:
     unordered_set<Observer *> _observers;
 };
+#endif

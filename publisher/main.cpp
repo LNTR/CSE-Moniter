@@ -4,12 +4,14 @@
 #include <chrono>
 #include <thread>
 
+#define API_URL "https://www.cse.lk/api/tradeSummary"
+
 int main(int argc, char **argv)
 {
-    // std::system("cls");
+    std::system("cls");
 
-    string ip = "127.0.0.1";
-    string port = "89";
+    string ip = argv[1];
+    string port = argv[2];
 
     Publisher client;
 
@@ -18,8 +20,7 @@ int main(int argc, char **argv)
 
     for (;;)
     {
-
-        auto results = session.post("https://www.cse.lk/api/tradeSummary");
+        auto results = session.post(API_URL);
         string message = results.body();
         client.push_new_message(message);
         std::this_thread::sleep_for(std::chrono::seconds(5));

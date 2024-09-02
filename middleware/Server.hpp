@@ -1,9 +1,4 @@
-
-#ifndef GLOBAL_NOTIFICATION_QUEUE
-#define GLOBAL_NOTIFICATION_QUEUE
 #include "NotificationQueue.hpp"
-#endif
-
 #include <array>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>

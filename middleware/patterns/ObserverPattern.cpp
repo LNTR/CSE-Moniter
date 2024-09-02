@@ -1,7 +1,4 @@
-#ifndef OBSERVER_PATTERN
-#define OBSERVER_PATTERN
 #include "ObserverPattern.hpp"
-#endif
 #include <iostream>
 
 void Subject::attach(Observer *observer)

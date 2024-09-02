@@ -1,11 +1,9 @@
-#ifndef OBSERVER_PATTERN
-#define OBSERVER_PATTERN
-#include "patterns/ObserverPattern.hpp"
-#endif
 
+#ifndef GLOBAL_NOTIFICATION_QUEUE
+#define GLOBAL_NOTIFICATION_QUEUE
 #include <vector>
 #include <chrono>
-
+#include "patterns/ObserverPattern.hpp"
 using std::string, std::vector;
 
 struct Notification
@@ -25,3 +23,4 @@ public:
 private:
     vector<Notification> notification_queue;
 };
+#endif
