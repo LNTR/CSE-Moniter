@@ -1,10 +1,10 @@
+#define API_URL "https://www.cse.lk/api/tradeSummary"
+
 #include "Publisher.hpp"
 #include "Session.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
-
-#define API_URL "https://www.cse.lk/api/tradeSummary"
 
 int main(int argc, char **argv)
 {
