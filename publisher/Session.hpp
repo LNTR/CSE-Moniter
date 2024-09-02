@@ -32,7 +32,6 @@ private:
     std::unique_ptr<asio::io_context> io_context;
     std::unique_ptr<ssl::context> ssl_context;
     std::unique_ptr<tcp::resolver> resolver;
-    std::unique_ptr<ssl::stream<beast::tcp_stream>> stream;
 
     void setup_session();
 

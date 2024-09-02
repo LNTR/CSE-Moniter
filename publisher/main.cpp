@@ -6,20 +6,20 @@
 
 int main(int argc, char **argv)
 {
-    std::system("cls");
+    // std::system("cls");
 
-    string ip = argv[1];
-    string port = argv[2];
+    string ip = "127.0.0.1";
+    string port = "89";
 
     Publisher client;
-    Session session;
 
     client.connect(ip, port);
+    Session session;
 
     for (;;)
     {
 
-        auto results = session.post("www.cse.lk/api/tradeSummary");
+        auto results = session.post("https://www.cse.lk/api/tradeSummary");
         string message = results.body();
         client.push_new_message(message);
         std::this_thread::sleep_for(std::chrono::seconds(5));
