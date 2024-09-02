@@ -22,9 +22,9 @@ void Session::load_root_certificates()
 
     std::string cert_path = "./cert.pem";
     std::ifstream cert_file;
-    // cert_file.open(cert_path);
+    cert_file.open(cert_path);
     std::stringstream buffer;
-    // buffer << cert_file.rdbuf();
+    buffer << cert_file.rdbuf();
 
     std::string cert = "# DigiCert Global Root G2\n"
                        "-----BEGIN CERTIFICATE-----\n"
@@ -49,10 +49,9 @@ void Session::load_root_certificates()
                        "pLiaWN0bfVKfjllDiIGknibVb63dDcY3fe0Dkhvld1927jyNxF1WW6LZZm6zNTfl\n"
                        "MrY=\n"
                        "-----END CERTIFICATE-----\n";
-    // cert += buffer.str();
-    // cert_file.close();
+    // std::string cert = buffer.str();
+    cert_file.close();
     boost::system::error_code ec;
-    std::cout << "Came here\n";
     ssl_context->add_certificate_authority(
         boost::asio::buffer(cert.data(), cert.size()), ec);
     if (ec)
