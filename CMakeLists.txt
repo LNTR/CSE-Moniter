@@ -18,12 +18,11 @@ add_library(Session publisher/Session.cpp)
 
 
 add_library(MySqlModel middleware/utils/MySqlModel.cpp)
-target_link_libraries(MySqlModel PRIVATE charconv)
 
 
 add_executable(cli_publisher publisher/main.cpp)
 target_link_libraries(cli_publisher PRIVATE Publisher Session)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/publisher/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/publisher/cert.pem DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 add_executable(middleware_sever middleware/middleware_sever.cpp)
@@ -31,7 +30,7 @@ target_link_libraries(middleware_sever PRIVATE Server Session)
 
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE jwt-cpp::jwt-cpp)
+target_link_libraries(main PRIVATE MySqlModel)
 
 # For later use: used for printing variable names in cmake
 # get_cmake_property(_variableNames VARIABLES)
