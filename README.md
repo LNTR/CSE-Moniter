@@ -17,6 +17,7 @@ This project is a C++ application that monitors stocks listed on the Colombo Sto
 ## Build Instructions
 
 1. **Requirements**:
+
    - CMake 3.5 or higher
    - C++20 compatible compiler
    - Boost Libraries (json, url)
@@ -31,10 +32,10 @@ This project is a C++ application that monitors stocks listed on the Colombo Sto
    ```
 
 ## Build the Project
+
 ```
 mkdir build
 cd build
 cmake ..
 make
 ```
-
