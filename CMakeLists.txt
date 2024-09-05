@@ -4,8 +4,12 @@ project(CSE-Moniter VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# find_package(Boost REQUIRED COMPONENTS json url)
+find_package(Boost REQUIRED COMPONENTS json)
+
+link_libraries(wsock32 ws2_32 ${Boost_LIBRARIES})
 add_subdirectory(middleware)
+add_subdirectory(publisher)
+
 # find_package(jwt-cpp CONFIG REQUIRED)
 
 
