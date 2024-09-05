@@ -1,4 +1,5 @@
-#include "Server.hpp"
+#include "users/ContentPublisher.hpp"
+#include "users/WebSubscriber.hpp"
 #include "utils/config.hpp"
 #include <thread>
 #include <iostream>

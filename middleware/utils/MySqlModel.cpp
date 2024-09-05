@@ -1,14 +1,6 @@
 #include "MySqlModel.hpp"
 #include "config.hpp"
 
-namespace db_config
-{
-    string host = "127.0.0.1";
-    string username = "root";
-    string password = "root";
-    string db_name = "ExampleDB";
-}
-
 MySqlModel::MySqlModel() : io_context()
 {
     set_up_connection();

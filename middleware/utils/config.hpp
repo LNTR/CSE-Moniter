@@ -8,5 +8,11 @@ using std::string;
 #define SUBSCRIBER_PORT_NUMBER 88
 #define PUBLISHER_PORT_NUMBER 89
 #define DATABASE_PORT_NUMBER 3306
-
+namespace db_config
+{
+    string host = "127.0.0.1";
+    string username = "root";
+    string password = "root";
+    string db_name = "ExampleDB";
+}
 #endif
